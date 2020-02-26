@@ -26,6 +26,7 @@ int fifo_evict() {
  * Input: The page table entry for the page that is being accessed.
  */
 void fifo_ref(pgtbl_entry_t *p) {
+	// uh actually you don't need to do anything i think
 
 	return;
 }
@@ -34,4 +35,7 @@ void fifo_ref(pgtbl_entry_t *p) {
  * replacement algorithm 
  */
 void fifo_init() {
+	// Make a single linked list perhaps???
+
+	// Every time a new entry comes in, ya gotta... ya know... append the thing lmao
 }

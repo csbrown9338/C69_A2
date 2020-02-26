@@ -18,6 +18,9 @@ extern struct frame *coremap;
  */
 
 int lru_evict() {
+	// Take ya list.
+	// Loop through until you reach the very very last one :) (next == null)
+	// das da one
 	
 	return 0;
 }
@@ -28,6 +31,9 @@ int lru_evict() {
  */
 void lru_ref(pgtbl_entry_t *p) {
 
+	// Have the previous and next point to each other.
+	// Loop through the previous ones until you reach null
+	// Make the head now point to the referenced one
 	return;
 }
 
@@ -36,4 +42,6 @@ void lru_ref(pgtbl_entry_t *p) {
  * replacement algorithm 
  */
 void lru_init() {
+	// Make a doubly linked list
+
 }
