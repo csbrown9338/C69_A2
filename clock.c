@@ -18,7 +18,10 @@ extern struct frame *coremap;
  */
 
 int clock_evict() {
-	
+	// Check the current frame we're at
+	// If the ref bit is turned off, then evict that one
+	// Otherwise, turn the ref bit off and go to next
+
 	return 0;
 }
 
@@ -27,6 +30,7 @@ int clock_evict() {
  * Input: The page table entry for the page that is being accessed.
  */
 void clock_ref(pgtbl_entry_t *p) {
+	// just uh change the ref bit... which is already taken care of :)
 
 	return;
 }
@@ -35,4 +39,8 @@ void clock_ref(pgtbl_entry_t *p) {
  * algorithm. 
  */
 void clock_init() {
+	// Make a circular list, probably should also have a previous???
+
+	// Also have a pointer i guess?
+
 }
