@@ -40,15 +40,14 @@ int allocate_frame(pgtbl_entry_t *p) {
 		// Write victim page to swap, if needed, and update pagetable
 		// TODO: GOTTA SWAPPPPPPPPP YO
 		// Update counters
-		if (coremap[frame] << PG_DIRTY) evict_dirty_count += 1;
+		pgtbl_entry_t *to_evict = coremap[frame].pte;
+		if (to_evict->frame & PG_DIRTY) evict_dirty_count += 1;
 		else evict_clean_count += 1;
 
-		// Make a duplicate of the pte i guess
-		// swap_pageout((unsigned)frame, );
 		// Save it into the swapfile, wherever that is??????
-
+		swap_pageout((unsigned)to_evict->frame, (int)to_evict->swap_off);
 		// I think that the swap bit needs to change?????
-		coremap[frame] << PG_ONSWAP = 1;
+		to_evict->frame |= PG_ONSWAP;
 
 	}
 
@@ -145,15 +144,15 @@ char *find_physpage(addr_t vaddr, char type) {
 
 	// TODO: IMPLEMENTATION NEEDED
 	// Use top-level page directory to get pointer to 2nd-level page table
-	(void)idx; // To keep compiler happy - remove when you have a real use.
-
+	uintptr_t pde = pgdir[idx].pde;
 
 	// Use vaddr to get index into 2nd-level page table and initialize 'p'
-
+	unsigned tbl_idx = PGTBL_INDEX(pde);
+	p = coremap[tbl_idx].pte;
 
 
 	// Check if p is valid or not, on swap or not, and handle appropriately
-	if (~(p->frame >> PG_VALID)) {
+	if (~(p->frame & PG_VALID)) {
 		// fuck man do something idk dude
 	}
 
