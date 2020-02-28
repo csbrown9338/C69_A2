@@ -154,13 +154,16 @@ char *find_physpage(addr_t vaddr, char type) {
 	// Check if p is valid or not, on swap or not, and handle appropriately
 	if (~(p->frame & PG_VALID)) {
 		// fuck man do something idk dude
+		miss_count += 1;
 	}
+	else hit_count += 1;
 
 
 	// Make sure that p is marked valid and referenced. Also mark it
 	// dirty if the access type indicates that the page will be written to.
-
-
+	if (type == 'M') p->frame |= PG_DIRTY;
+	p->frame |= PG_VALID;
+	p->frame |= PG_REF;
 
 	// Call replacement algorithm's ref_fcn for this page
 	ref_fcn(p);
