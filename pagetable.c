@@ -153,8 +153,9 @@ char *find_physpage(addr_t vaddr, char type) {
 
 	// Check if p is valid or not, on swap or not, and handle appropriately
 	if (~(p->frame & PG_VALID)) {
-		// fuck man do something idk dude
 		miss_count += 1;
+		if (~(p->frame & PG_ONSWAP)) allocate_frame(p);
+		else swap_pagein((unsigned)p->frame, (int)p->swap_off);
 	}
 	else hit_count += 1;
 
