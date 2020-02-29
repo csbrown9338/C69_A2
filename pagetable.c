@@ -121,7 +121,7 @@ void init_frame(int frame, addr_t vaddr) {
 	
 	memset(mem_ptr, 0, SIMPAGESIZE); // zero-fill the frame
 	*vaddr_ptr = vaddr;             // record the vaddr for error checking
-PGDIR_INDEX(vaddr); // get index into page direct
+
 	return;
 }
 
