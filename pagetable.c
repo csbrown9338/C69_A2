@@ -41,11 +41,18 @@ int allocate_frame(pgtbl_entry_t *p) {
 		// TODO: GOTTA SWAPPPPPPPPP YO
 		// Update counters
 		pgtbl_entry_t *to_evict = coremap[frame].pte;
-		if (to_evict->frame & PG_DIRTY) evict_dirty_count += 1;
-		else evict_clean_count += 1;
+		if (~(to_evict-> & PG_ONSWAP)) {
+			if (to_evict->frame & PG_DIRTY) {
+				evict_dirty_count += 1;
+				off_t swap_off = swap_pageout((unsigned)to_evict->frame, (int)to_evict->swap_off);
+				if (swap_off != INVALID_SWAP) to_evict->swap_off = swap_off;
+				// otherwise we uhhh got an error lol couldn't do da swap
+			}
+			else evict_clean_count += 1;
+		}
 
 		// Save it into the swapfile, wherever that is??????
-		swap_pageout((unsigned)to_evict->frame, (int)to_evict->swap_off);
+		
 		// I think that the swap bit needs to change?????
 		to_evict->frame |= PG_ONSWAP;
 
@@ -142,7 +149,6 @@ char *find_physpage(addr_t vaddr, char type) {
 	pgtbl_entry_t *p=NULL; // pointer to the full page table entry for vaddr
 	unsigned idx = PGDIR_INDEX(vaddr); // get index into page directory
 
-	// TODO: IMPLEMENTATION NEEDED
 	// Use top-level page directory to get pointer to 2nd-level page table
 	uintptr_t pde = pgdir[idx].pde;
 
