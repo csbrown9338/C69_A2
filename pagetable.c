@@ -151,10 +151,12 @@ char *find_physpage(addr_t vaddr, char type) {
 
 	// Use top-level page directory to get pointer to 2nd-level page table
 	uintptr_t pde = pgdir[idx].pde;
+	// Do something if ya can't find it??? or if it's not valid i guess????
 
 	// Use vaddr to get index into 2nd-level page table and initialize 'p'
-	unsigned tbl_idx = PGTBL_INDEX(pde);
-	p = coremap[tbl_idx].pte;
+	unsigned tbl_idx = PGTBL_INDEX(vaddr);
+	pgtbl_entry_t *tbl = (pgtbl_entry_t *) (pde & PAGE_MASK);
+	p = tbl + tbl_idx;
 
 
 	// Check if p is valid or not, on swap or not, and handle appropriately
@@ -168,7 +170,7 @@ char *find_physpage(addr_t vaddr, char type) {
 
 	// Make sure that p is marked valid and referenced. Also mark it
 	// dirty if the access type indicates that the page will be written to.
-	if (type == 'M') p->frame |= PG_DIRTY;
+	if (type == 'M' || type == 'S') p->frame |= PG_DIRTY;
 	p->frame |= PG_VALID;
 	p->frame |= PG_REF;
 
