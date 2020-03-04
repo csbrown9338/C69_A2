@@ -41,7 +41,7 @@ int allocate_frame(pgtbl_entry_t *p) {
 		// TODO: GOTTA SWAPPPPPPPPP YO
 		// Update counters
 		pgtbl_entry_t *to_evict = coremap[frame].pte;
-		if (~(to_evict-> & PG_ONSWAP)) {
+		if (~(to_evict->frame & PG_ONSWAP)) {
 			if (to_evict->frame & PG_DIRTY) {
 				evict_dirty_count += 1;
 				off_t swap_off = swap_pageout((unsigned)to_evict->frame, (int)to_evict->swap_off);
