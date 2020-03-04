@@ -28,7 +28,7 @@ int clock_evict() {
 		pgtbl_entry_t *p = coremap[to_evict_maybe].pte;
 		if (p->frame & PG_REF) {
 			p->frame &= ~PG_REF;
-			to_evict_maybe = (to_evict_maybe++) % memsize;
+			to_evict_maybe = (to_evict_maybe+1) % memsize;
 		}
 		// Otherwise, return it :)
 		else found = 1;
