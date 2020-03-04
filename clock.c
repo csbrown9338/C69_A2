@@ -20,9 +20,9 @@ static int to_evict_maybe;
  */
 
 int clock_evict() {
-	bool found = false;
+	int found = 0;
 	// Loop through them frames
-	while (!(found)) {
+	while (found == 0) {
 		// Check the current frame we're at
 		// If the ref bit is turned on, turn it off and go to next
 		pgtbl_entry_t *p = coremap[to_evict_maybe].pte;
@@ -31,7 +31,7 @@ int clock_evict() {
 			to_evict_maybe = (to_evict_maybe++) % memsize;
 		}
 		// Otherwise, return it :)
-		else found = true;
+		else found = 1;
 	}
 
 	return to_evict_maybe;
