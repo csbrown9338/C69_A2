@@ -173,7 +173,7 @@ char *find_physpage(addr_t vaddr, char type) {
 			// GOTTA ACTUALLY INITIALIZE THE FRAME DOE HAHAHAH... 
 			init_frame(frame, vaddr);
 			// This da new frame
-			p->frame = frame;
+			p->frame = frame << PAGE_SHIFT;
 		}
 		else swap_pagein((unsigned)p->frame, (int)p->swap_off);
 	}
