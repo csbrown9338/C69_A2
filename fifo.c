@@ -21,7 +21,7 @@ static int to_evict;
 int fifo_evict() {
 	// Gotta increase it yo
 	// but like, be careful of edgecase too
-	return ((to_evict++) % memsize);
+	return ((to_evict+1) % memsize);
 }
 
 /* This function is called on each access to a page to update any information
