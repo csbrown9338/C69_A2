@@ -151,13 +151,18 @@ char *find_physpage(addr_t vaddr, char type) {
 
 	// Use top-level page directory to get pointer to 2nd-level page table
 	uintptr_t pde = pgdir[idx].pde;
-	// Do something if ya can't find it??? or if it's not valid i guess????
-
+	// Do the thing if ya can't find it??? or if it's not valid i guess????
+	if (~(pde & PG_VALID)) {
+		pgdir[idx] = init_second_level();
+		pde = pgdir[idx].pde;
+	}
 	// Use vaddr to get index into 2nd-level page table and initialize 'p'
+	// This gets the second level table entry address
 	unsigned tbl_idx = PGTBL_INDEX(vaddr);
+	// PAGE MASK IMPORTANT FOR SOME REASON BUT HERE IT IS I GUESS
 	pgtbl_entry_t *tbl = (pgtbl_entry_t *) (pde & PAGE_MASK);
+	// p should be the address of the tbl, and tbl_idx specifying the entry :)
 	p = tbl + tbl_idx;
-
 
 	// Check if p is valid or not, on swap or not, and handle appropriately
 	if (~(p->frame & PG_VALID)) {
