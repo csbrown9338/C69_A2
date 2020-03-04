@@ -42,6 +42,7 @@ void lru_ref(pgtbl_entry_t *p) {
  * replacement algorithm 
  */
 void lru_init() {
-	// Make a doubly linked list
+	// Make a doubly linked list (BUT THAT'S DONE IN THE COREMAP I THINK????)
+	// So nothing to see here :D
 
 }
